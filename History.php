@@ -51,6 +51,8 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <?php mysqli_stmt_close($stmt); ?>
-<?php if ($standalone_page) {
+<?php 
+if ($standalone_page) {
   include 'include/dashboard_end.php';
-} ?>
+}
+ ?>
