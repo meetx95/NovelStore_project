@@ -872,10 +872,7 @@
   }
 }
 
-/* 
-   MOBILE
- */
-
+/* MOBILE */
 @media (max-width: 760px) {
   .novel-page {
     padding: 18px 15px 50px;
@@ -895,11 +892,8 @@
 
   .book-hero-content {
     min-height: auto;
-
     grid-template-columns: 1fr;
-
     gap: 35px;
-
     padding: 35px 25px 40px;
   }
 
@@ -940,7 +934,6 @@
 
   .hero-actions {
     align-items: stretch;
-
     flex-direction: column;
   }
 
@@ -948,30 +941,37 @@
   .wishlist-main-btn {
     width: 100%;
   }
+
   .hero-actions form {
     width: 100%;
   }
+
   .section-heading-modern {
     align-items: flex-start;
     flex-direction: column;
   }
+
   .chapter-preview {
     align-items: flex-start;
     flex-direction: column;
   }
+
   .chapter-read-btn {
     width: 100%;
     justify-content: center;
   }
+
   .book-shelf {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px 14px;
   }
+
   .discover-banner {
     align-items: flex-start;
     flex-direction: column;
     padding: 28px;
   }
+
   .discover-btn {
     width: 100%;
     justify-content: center;
