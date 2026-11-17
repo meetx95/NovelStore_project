@@ -28,29 +28,29 @@ $result = mysqli_stmt_get_result($stmt);
     <?php if (mysqli_num_rows($result)):
       while ($row = mysqli_fetch_assoc($result)): ?>
 
-        <div class="history-item">
-          <img src="Assets/Cover/<?php echo $row['cover_image']; ?>" alt="Cover">
-          <div>
-            <h3><?php echo ($row['title']); ?></h3>
-            <p>Chapter <?php echo (int)$row['chapter_number']; ?> - <?php echo ($row['chapter_title']); ?>
-            </p>
-            <small><b>Last read:</b> <?php echo ($row['last_read_at']); ?></small>
-          </div>
-          <a class="primary-btn"
-            href="reader.php?novel_id=<?php echo (int)$row['novel_id']; ?>&chapter=<?php echo (int)$row['chapter_number']; ?>">
-            Continue
-          </a>
-        </div>
-      <?php endwhile;
-    else: ?>
-      <div class="empty-box">No reading history yet.</div>
+    <div class="history-item">
+      <img src="Assets/Cover/<?php echo $row['cover_image']; ?>" alt="Cover">
+      <div>
+        <h3><?php echo ($row['title']); ?></h3>
+        <p>Chapter <?php echo (int)$row['chapter_number']; ?> - <?php echo ($row['chapter_title']); ?></p>
+        <small><b>Last read:</b> <?php echo ($row['last_read_at']); ?></small>
+      </div>
+      <a class="primary-btn"
+        href="reader.php?novel_id=<?php echo (int)$row['novel_id']; ?>&chapter=<?php echo (int)$row['chapter_number']; ?>">
+        Continue
+      </a>
+    </div>
+    <?php
+      endwhile;
+    else:
+      ?>
+    <div class="empty-box">No reading history yet.</div>
     <?php endif; ?>
 
-
   </div>
-
 </div>
 
 <?php mysqli_stmt_close($stmt); ?>
-
-<?php if ($standalone_page) { include 'include/dashboard_end.php'; } ?>
+<?php if ($standalone_page) {
+  include 'include/dashboard_end.php';
+} ?>
