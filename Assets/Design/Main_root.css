@@ -1,94 +1,50 @@
 :root {
-  /* Primary Coffee */
   --primary: #6f4e37;
-  /* Coffee */
   --primary-dark: #3e2723;
-  /* Dark Roast */
   --primary-light: #9a6b4f;
-  /* Latte Brown */
-
-  /* Secondary / Cream */
   --secondary: #b08968;
-  /* Cappuccino */
   --accent: #d6bfae;
-  /* Coffee Cream */
-
-  /* Background */
   --bg: #f5efe6;
-  /* Warm Coffee Paper */
   --bg-light: #fbf8f3;
-  /* Milk Foam */
   --bg-dark: #2b1d17;
-  /* Espresso */
   --bg-mid: #8b6248;
-  /* Medium Roast */
-
-  /* Surfaces */
   --surface: #fffdf8;
-  /* Cream */
   --surface-2: #f0e6da;
-  /* Latte */
   --surface-3: #e5d5c4;
-  /* Beige Coffee */
-
-  /* Text */
   --text: #2c211b;
-  /* Dark Coffee */
   --text-secondary: #6b584b;
-  /* Mocha */
   --text-muted: #9a8879;
-  /* Soft Brown */
   --text-muted-black: #17120f;
   --white: #ffffff;
-
-  /* Border */
   --border-color: #dfd0c0;
   --border: 1px solid var(--border-color);
   --border-1: 1px solid var(--bg-dark);
   --border-light: #eee5db;
   --border-dark: #3a2a21;
-
-  /* Status */
   --success: #607d5b;
   --danger: #a94b45;
   --warning: #c28b3c;
   --rating: #c9953b;
-
-  /* 
-     GRADIENTS
-   */
-
-  /* Espresso → Coffee → Latte */
   --gradient-primary: linear-gradient(
     135deg,
     #3e2723 0%,
     #6f4e37 55%,
     #9a6b4f 100%
   );
-
-  /* Soft Cream */
   --gradient-soft: linear-gradient(135deg, #fffdf8 0%, #f1e7db 100%);
-
-  /* Coffee Card */
   --gradient-card: linear-gradient(145deg, #fffdf8 0%, #f8efe5 100%);
-
-  /* Cover */
   --gradient-cover: linear-gradient(
     135deg,
     #3e2723 0%,
     #6f4e37 55%,
     #9a6b4f 100%
   );
-
-  /* Rich Coffee */
   --gradient-info: linear-gradient(
     135deg,
     #2b1d17 0%,
     #4e342e 50%,
     #795548 100%
   );
-
-  /* Dark Coffee Cover */
   --gradient-cover-dark:
     radial-gradient(
       circle at 15% 20%,
@@ -101,16 +57,9 @@
       transparent 35%
     ),
     linear-gradient(135deg, #3e2723, #241713 60%, #17100d);
-
-  /* 
-     FONTS
-   */
-
   --font-body: "DM Sans", Arial, sans-serif;
   --font-heading: "Playfair Display", Georgia, serif;
   --font-header: "Arial Black";
-
-  /* Font Sizes */
   --fs-xs: 11px;
   --fs-sm: 13px;
   --fs-md: 15px;
@@ -118,11 +67,6 @@
   --fs-xl: 24px;
   --fs-2xl: 32px;
   --fs-3xl: 44px;
-
-  /* 
-     SPACING
-   */
-
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -133,23 +77,19 @@
   --space-8: 40px;
   --space-9: 48px;
   --space-10: 64px;
-  /* RADIUS */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius: 16px;
   --radius-lg: 20px;
   --radius-xl: 28px;
   --radius-pill: 999px;
-  /* SHADOWS */
   --shadow-sm: 0 2px 8px rgba(62, 39, 35, 0.07);
   --shadow-md: 0 8px 24px rgba(62, 39, 35, 0.11);
   --shadow-lg: 0 18px 45px rgba(62, 39, 35, 0.15);
   --shadow-hover: 0 18px 35px rgba(62, 39, 35, 0.18);
-  /* TRANSITIONS */
   --tra-fast: 0.18s ease;
   --tra: 0.28s ease;
   --tra-slow: 0.45s ease;
-  /* LAYOUT */
   --sidebar-width: 250px;
   --content-max: 1500px;
 }
@@ -229,7 +169,7 @@ select {
   padding: 10px 12px;
   min-height: 40px;
   outline: none;
-  tra: all var(--tra-fast);
+  transition: all var(--tra-fast);
   font-family: inherit;
 }
 
