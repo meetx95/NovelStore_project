@@ -258,90 +258,47 @@ $initial = strtoupper(substr($user['username'], 0, 1));
           <i class="fa-solid fa-chevron-right"></i>
         </a>
 
-
         <a href="Dashboard.php?page=Wishlist" class="quick-link">
-
           <div class="quick-link-icon heart">
             <i class="fa-solid fa-heart"></i>
           </div>
-
           <div>
-
-            <strong>
-              Wishlist
-            </strong>
-
-            <span>
-              Books you've saved
-            </span>
-
+            <strong>Wishlist</strong>
+            <span>Books you've saved</span>
           </div>
-
           <i class="fa-solid fa-chevron-right"></i>
-
         </a>
 
-
         <a href="Dashboard.php?page=History" class="quick-link">
-
           <div class="quick-link-icon history">
             <i class="fa-solid fa-clock-rotate-left"></i>
           </div>
-
           <div>
-
-            <strong>
-              Reading History
-            </strong>
-
-            <span>
-              Continue your reading journey
-            </span>
-
+            <strong>Reading History</strong>
+            <span>Continue your reading journey</span>
           </div>
-
           <i class="fa-solid fa-chevron-right"></i>
-
         </a>
-
       </div>
 
     </div>
-
   </section>
 
-
-  <!-- =========================
-         DANGER / LOGOUT
-    ========================== -->
-
+  <!-- logout -->
   <section class="account-footer">
-
     <div>
-
       <span class="footer-icon">
         <i class="fa-solid fa-shield-halved"></i>
       </span>
-
       <div>
-
-        <strong>
-          Account & Security
-        </strong>
-
-        <p>
-          Keep your account information secure.
-        </p>
-
+        <strong>Account & Security</strong>
+        <p>Keep your account information secure.</p>
       </div>
-
     </div>
-
     <a href="logout.php" class="logout-button">
       <i class="fa-solid fa-arrow-right-from-bracket"></i>
       Sign Out
     </a>
-
   </section>
 
 </div>
