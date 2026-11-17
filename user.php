@@ -135,62 +135,40 @@ $initial = strtoupper(substr($user['username'], 0, 1));
       <div class="stat-icon purchase-icon">
         <i class="fa-solid fa-book"></i>
       </div>
-
       <div class="stat-content">
         <strong>
           <?php echo $purchase_count; ?>
         </strong>
-
         <span>Purchased Books</span>
       </div>
-
       <i class="fa-solid fa-chevron-right stat-arrow"></i>
     </a>
 
-
     <a href="Dashboard.php?page=Wishlist" class="profile-stat">
-
       <div class="stat-icon wishlist-icon">
         <i class="fa-solid fa-heart"></i>
       </div>
 
       <div class="stat-content">
-
         <strong>
           <?php echo $wishlist_count; ?>
         </strong>
-
-        <span>
-          Wishlist Books
-        </span>
-
+        <span>Wishlist Books</span>
       </div>
-
       <i class="fa-solid fa-chevron-right stat-arrow"></i>
-
     </a>
 
-
     <a href="Dashboard.php?page=History" class="profile-stat">
-
       <div class="stat-icon history-icon">
         <i class="fa-solid fa-clock-rotate-left"></i>
       </div>
-
       <div class="stat-content">
-
         <strong>
           <?php echo $history_count; ?>
         </strong>
-
-        <span>
-          Books Read
-        </span>
-
+        <span>Books Read</span>
       </div>
-
       <i class="fa-solid fa-chevron-right stat-arrow"></i>
-
     </a>
 
   </section>
@@ -202,12 +180,10 @@ $initial = strtoupper(substr($user['username'], 0, 1));
         <div class="heading-icon">
           <i class="fa-solid fa-user"></i>
         </div>
-
         <div>
           <h2>Account Information</h2>
           <p> Your personal account details </p>
         </div>
-
       </div>
 
       <div class="info-list">
@@ -216,65 +192,45 @@ $initial = strtoupper(substr($user['username'], 0, 1));
           <div class="info-icon">
             <i class="fa-solid fa-user"></i>
           </div>
-
           <div class="info-text">
             <span>Username</span>
             <strong>
               <?php echo $username; ?>
             </strong>
-
           </div>
-
         </div>
 
-
         <div class="info-row">
-
           <div class="info-icon">
             <i class="fa-solid fa-envelope"></i>
           </div>
-
           <div class="info-text">
-
             <span>Email Address</span>
-
             <strong>
               <?php echo $email; ?>
             </strong>
-
           </div>
-
         </div>
 
-
         <div class="info-row">
-
           <div class="info-icon">
             <i class="fa-solid fa-calendar-days"></i>
           </div>
-
           <div class="info-text">
-
             <span>Member Since</span>
-
             <strong>
               <?php echo date(
                 "d M Y",
                 strtotime($user['created_at'])
               ); ?>
             </strong>
-
           </div>
-
         </div>
 
       </div>
-
     </div>
 
-
     <!-- Quick Access -->
-
     <div class="account-card">
 
       <div class="card-heading">
@@ -282,42 +238,24 @@ $initial = strtoupper(substr($user['username'], 0, 1));
         <div class="heading-icon">
           <i class="fa-solid fa-bolt"></i>
         </div>
-
         <div>
-
           <h2>Quick Access</h2>
-
-          <p>
-            Manage your reading activity
+          <p>Manage your reading activity
           </p>
-
         </div>
 
       </div>
 
-
       <div class="quick-links">
-
         <a href="Dashboard.php?page=Library" class="quick-link">
-
           <div class="quick-link-icon">
             <i class="fa-solid fa-book-open"></i>
           </div>
-
           <div>
-
-            <strong>
-              My Library
-            </strong>
-
-            <span>
-              View your purchased books
-            </span>
-
+            <strong>My Library</strong>
+            <span>View your purchased books</span>
           </div>
-
           <i class="fa-solid fa-chevron-right"></i>
-
         </a>
 
 
@@ -408,4 +346,6 @@ $initial = strtoupper(substr($user['username'], 0, 1));
 
 </div>
 
-<?php if ($standalone_page) { include 'include/dashboard_end.php'; } ?>
+<?php if ($standalone_page) {
+  include 'include/dashboard_end.php';
+} ?>
