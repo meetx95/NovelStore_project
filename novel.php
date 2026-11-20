@@ -191,7 +191,7 @@ include 'include/dashboard_start.php';
 
       <div class="book-detail-info">
         <?php if (!empty($novel['genre'])): ?>
-          <span class="eyebrow"><?php echo htmlspecialchars($novel['genre']); ?></span>
+        <span class="eyebrow"><?php echo htmlspecialchars($novel['genre']); ?></span>
         <?php endif; ?>
 
         <h1><?php echo htmlspecialchars($novel['title']); ?></h1>
@@ -231,13 +231,13 @@ include 'include/dashboard_start.php';
 
         <div class="book-actions">
           <?php if ((float)$novel['price'] == 0 || $purchased): ?>
-            <a class="primary-btn" href="reader.php?novel_id=<?php echo $novel_id; ?>">
-              <i class="fa-solid fa-book-open"></i>&nbsp; Read Now
-            </a>
+          <a class="primary-btn" href="reader.php?novel_id=<?php echo $novel_id; ?>">
+            <i class="fa-solid fa-book-open"></i>&nbsp; Read Now
+          </a>
           <?php else: ?>
-            <a class="primary-btn" href="purchase.php?novel_id=<?php echo $novel_id; ?>">
-              <i class="fa-solid fa-lock-open"></i>&nbsp; Purchase & Read
-            </a>
+          <a class="primary-btn" href="purchase.php?novel_id=<?php echo $novel_id; ?>">
+            <i class="fa-solid fa-lock-open"></i>&nbsp; Purchase & Read
+          </a>
           <?php endif; ?>
 
           <form method="POST">
@@ -250,9 +250,9 @@ include 'include/dashboard_start.php';
 
         <div class="book-price">
           <?php if ((float)$novel['price'] == 0): ?>
-            Free
+          Free
           <?php else: ?>
-            ₹<?php echo number_format((float)$novel['price'], 2); ?>
+          ₹<?php echo number_format((float)$novel['price'], 2); ?>
           <?php endif; ?>
         </div>
       </div>
@@ -266,75 +266,103 @@ include 'include/dashboard_start.php';
     </div>
 
     <?php if ($first_chapter): ?>
-      <div class="history-item">
-        <div>
-          <h3>Chapter <?php echo (int)$first_chapter['chapter_number']; ?>:
-            <?php echo htmlspecialchars($first_chapter['chapter_title']); ?></h3>
-          <p>Begin your journey with the first chapter.</p>
-        </div>
-        <a class="primary-btn"
-          href="reader.php?novel_id=<?php echo $novel_id; ?>&chapter=<?php echo (int)$first_chapter['chapter_number']; ?>">
-          Start Reading
-        </a>
+    <div class="history-item">
+      <div>
+        <h3>Chapter <?php echo (int)$first_chapter['chapter_number']; ?>:
+          <?php echo htmlspecialchars($first_chapter['chapter_title']); ?></h3>
+        <p>Begin your journey with the first chapter.</p>
       </div>
+      <a class="primary-btn"
+        href="reader.php?novel_id=<?php echo $novel_id; ?>&chapter=<?php echo (int)$first_chapter['chapter_number']; ?>">
+        Start Reading
+      </a>
+    </div>
     <?php else: ?>
-      <div class="empty-box">Chapters are not available yet.</div>
+    <div class="empty-box">Chapters are not available yet.</div>
     <?php endif; ?>
   </section>
 
+
   <section class="book-section-block" id="rating">
+
     <div class="section-title">
       <h2>Rate This Novel</h2>
       <span class="muted">
-        <?php echo $user_rating > 0 ? 'You rated ' . $user_rating . '/5' : 'Choose 1 to 5 stars'; ?>
+        <?php echo $user_rating > 0
+          ? 'You rated ' . $user_rating . '/5'
+          : 'Your opinion matters'; ?>
       </span>
     </div>
 
     <div class="dashboard-rating-card">
-      <div>
-        <strong><?php echo $user_rating > 0 ? 'Update your rating' : 'How would you rate this novel?'; ?></strong>
-        <p class="muted">Your rating helps other readers discover good books.</p>
+
+      <div class="rating-information">
+        <div class="rating-icon">
+          <i class="fas fa-star"></i>
+        </div>
+
+        <div>
+          <strong>
+            <?php echo $user_rating > 0
+              ? 'Update your rating'
+              : 'Enjoyed this novel?'; ?>
+          </strong>
+
+          <p class="muted">
+            Share your experience with other readers.
+          </p>
+        </div>
       </div>
 
       <form method="POST" class="dashboard-rating-form">
+
         <input type="hidden" name="rating_action" value="1">
-        <?php for ($i = 1; $i <= 5; $i++): ?>
-          <label title="<?php echo $i; ?> out of 5">
+
+        <div class="star-rating">
+          <?php for ($i = 1; $i <= 5; $i++): ?>
+          <label class="star-option" title="<?php echo $i; ?> out of 5 stars">
             <input type="radio" name="rating" value="<?php echo $i; ?>"
               <?php echo $user_rating === $i ? 'checked' : ''; ?> required>
-            ★ <?php echo $i; ?>
+
+            <i class="fas fa-star"></i>
           </label>
-        <?php endfor; ?>
+          <?php endfor; ?>
+        </div>
+
         <button type="submit" class="primary-btn dashboard-form-button">
-          <?php echo $user_rating > 0 ? 'Rate Again' : 'Add Rating'; ?>
+          <i class="fas fa-star"></i>
+          <?php echo $user_rating > 0 ? 'Update Rating' : 'Submit Rating'; ?>
         </button>
+
       </form>
+
     </div>
   </section>
 
-  <?php if (count($related_books) > 0): ?>
-    <section class="book-section-block">
-      <div class="section-title">
-        <h2>More Like This</h2>
-      </div>
 
-      <div class="novel-grid">
-        <?php foreach ($related_books as $book): ?>
-          <article class="novel-card">
-            <img src="Assets/Cover/<?php echo htmlspecialchars($book['cover_image']); ?>" alt="Cover">
-            <div class="novel-info">
-              <h3><?php echo htmlspecialchars($book['title']); ?></h3>
-              <p><?php echo htmlspecialchars($book['author']); ?></p>
-              <p class="rating"><b>Rating:</b> <?php echo number_format((float)$book['rating'], 1); ?>/5</p>
-              <span class="<?php echo (float)$book['price'] == 0 ? 'free' : 'price'; ?>">
-                <?php echo (float)$book['price'] == 0 ? 'Free' : '₹' . number_format((float)$book['price'], 2); ?>
-              </span>
-              <a class="card-link" href="novel.php?id=<?php echo (int)$book['novel_id']; ?>">View Book</a>
-            </div>
-          </article>
-        <?php endforeach; ?>
-      </div>
-    </section>
+  <?php if (count($related_books) > 0): ?>
+  <section class="book-section-block">
+    <div class="section-title">
+      <h2>More Like This</h2>
+    </div>
+
+    <div class="novel-grid">
+      <?php foreach ($related_books as $book): ?>
+      <article class="novel-card">
+        <img src="Assets/Cover/<?php echo htmlspecialchars($book['cover_image']); ?>" alt="Cover">
+        <div class="novel-info">
+          <h3><?php echo htmlspecialchars($book['title']); ?></h3>
+          <p><?php echo htmlspecialchars($book['author']); ?></p>
+          <p class="rating"><b>Rating:</b> <?php echo number_format((float)$book['rating'], 1); ?>/5</p>
+          <span class="<?php echo (float)$book['price'] == 0 ? 'free' : 'price'; ?>">
+            <?php echo (float)$book['price'] == 0 ? 'Free' : '₹' . number_format((float)$book['price'], 2); ?>
+          </span>
+          <a class="card-link" href="novel.php?id=<?php echo (int)$book['novel_id']; ?>">View Book</a>
+        </div>
+      </article>
+      <?php endforeach; ?>
+    </div>
+  </section>
   <?php endif; ?>
 
   <section class="book-section-block">
@@ -344,18 +372,18 @@ include 'include/dashboard_start.php';
 
     <div class="novel-grid">
       <?php while ($book = mysqli_fetch_assoc($more_books_result)): ?>
-        <article class="novel-card">
-          <img src="Assets/Cover/<?php echo htmlspecialchars($book['cover_image']); ?>" alt="Cover">
-          <div class="novel-info">
-            <h3><?php echo htmlspecialchars($book['title']); ?></h3>
-            <p><?php echo htmlspecialchars($book['author']); ?></p>
-            <p class="rating"><b>Rating:</b> <?php echo number_format((float)$book['rating'], 1); ?>/5</p>
-            <span class="<?php echo (float)$book['price'] == 0 ? 'free' : 'price'; ?>">
-              <?php echo (float)$book['price'] == 0 ? 'Free' : '₹' . number_format((float)$book['price'], 2); ?>
-            </span>
-            <a class="card-link" href="novel.php?id=<?php echo (int)$book['novel_id']; ?>">View Book</a>
-          </div>
-        </article>
+      <article class="novel-card">
+        <img src="Assets/Cover/<?php echo htmlspecialchars($book['cover_image']); ?>" alt="Cover">
+        <div class="novel-info">
+          <h3><?php echo htmlspecialchars($book['title']); ?></h3>
+          <p><?php echo htmlspecialchars($book['author']); ?></p>
+          <p class="rating"><b>Rating:</b> <?php echo number_format((float)$book['rating'], 1); ?>/5</p>
+          <span class="<?php echo (float)$book['price'] == 0 ? 'free' : 'price'; ?>">
+            <?php echo (float)$book['price'] == 0 ? 'Free' : '₹' . number_format((float)$book['price'], 2); ?>
+          </span>
+          <a class="card-link" href="novel.php?id=<?php echo (int)$book['novel_id']; ?>">View Book</a>
+        </div>
+      </article>
       <?php endwhile; ?>
     </div>
   </section>
