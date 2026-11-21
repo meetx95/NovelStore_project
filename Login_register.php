@@ -1,13 +1,17 @@
 <?php
 session_start();
 require_once 'config/db.php';
+
 if (isset($_SESSION['user_id'])) {
   header("Location: Dashboard.php");
   exit();
 }
 
 $errors = [];
-$active_form = (isset($_GET['mode']) && $_GET['mode'] === 'register') || (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], '#register') !== false) ? "register" : "login";
+
+$active_form = (isset($_GET['mode']) && $_GET['mode'] === 'register')
+  ? 'register'
+  : 'login';
 
 $login_email_val = '';
 $username_val = '';
@@ -15,10 +19,13 @@ $register_email_val = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+  // LOGIN
   if (isset($_POST['login'])) {
-    $active_form = "login";
+    $active_form = 'login';
+
     $email = trim($_POST['login_email'] ?? '');
     $password = $_POST['login_password'] ?? '';
+
     $login_email_val = $email;
 
     if ($email === '' || $password === '') {
@@ -26,27 +33,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-      $stmt = mysqli_prepare($conn, "SELECT user_id, username, password FROM users WHERE email = ?");
-      mysqli_stmt_bind_param($stmt, "s", $email);
-      mysqli_stmt_execute($stmt);
-      $result = mysqli_stmt_get_result($stmt);
-      $user = mysqli_fetch_assoc($result);
-      mysqli_stmt_close($stmt);
+      $stmt = mysqli_prepare(
+        $conn,
+        "SELECT user_id, username, password FROM users WHERE email = ?"
+      );
 
-      if ($user && ($password === $user['password'] || password_verify($password, $user['password']))) {
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = (int)$user['user_id'];
-        $_SESSION['username'] = $user['username'];
-        header("Location: Dashboard.php");
-        exit();
+      if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_assoc($result);
+
+        mysqli_stmt_close($stmt);
+
+        $password_valid = false;
+
+        if ($user) {
+          // Modern hashed password
+          if (password_verify($password, $user['password'])) {
+            $password_valid = true;
+          }
+          // Temporary support for legacy plain-text accounts
+          elseif ($password === $user['password']) {
+            $password_valid = true;
+
+            // Upgrade legacy password to secure hash
+            $hashed_password = $password;
+
+            $update = mysqli_prepare(
+              $conn,
+              "UPDATE users SET password = ? WHERE user_id = ?"
+            );
+
+            if ($update) {
+              mysqli_stmt_bind_param(
+                $update,
+                "si",
+                $hashed_password,
+                $user['user_id']
+              );
+
+              mysqli_stmt_execute($update);
+              mysqli_stmt_close($update);
+            }
+          }
+        }
+
+        if ($password_valid) {
+          session_regenerate_id(true);
+
+          $_SESSION['user_id'] = (int)$user['user_id'];
+          $_SESSION['username'] = $user['username'];
+
+          header("Location: Dashboard.php");
+          exit();
+        } else {
+          $errors[] = "Invalid email or password.";
+        }
       } else {
-        $errors[] = "Invalid email or password.";
+        $errors[] = "Unable to process login.";
       }
     }
   }
 
+  // REGISTER
   if (isset($_POST['register'])) {
-    $active_form = "register";
+    $active_form = 'register';
+
     $username = trim($_POST['username'] ?? '');
     $email = trim($_POST['register_email'] ?? '');
     $password = $_POST['register_password'] ?? '';
@@ -55,47 +109,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username_val = $username;
     $register_email_val = $email;
 
-    if ($username === '' || $email === '' || $password === '' || $confirm === '') {
+    if (
+      $username === '' ||
+      $email === '' ||
+      $password === '' ||
+      $confirm === ''
+    ) {
       $errors[] = "All fields are required.";
     }
+
     if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $errors[] = "Please enter a valid email.";
     }
+
     if ($username !== '' && strlen($username) < 3) {
       $errors[] = "Username must be at least 3 characters.";
     }
+
     if ($password !== '' && strlen($password) < 6) {
       $errors[] = "Password must be at least 6 characters.";
     }
+
     if ($password !== $confirm) {
       $errors[] = "Passwords do not match.";
     }
 
+    // Check duplicate username/email
     if (empty($errors)) {
-      $stmt = mysqli_prepare($conn, "SELECT user_id FROM users WHERE username = ? OR email = ?");
-      mysqli_stmt_bind_param($stmt, "ss", $username, $email);
-      mysqli_stmt_execute($stmt);
-      mysqli_stmt_store_result($stmt);
-      if (mysqli_stmt_num_rows($stmt) > 0) {
-        $errors[] = "Username or email already exists.";
+      $stmt = mysqli_prepare(
+        $conn,
+        "SELECT user_id FROM users WHERE username = ? OR email = ?"
+      );
+
+      if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "ss", $username, $email);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+
+        if (mysqli_stmt_num_rows($stmt) > 0) {
+          $errors[] = "Username or email already exists.";
+        }
+
+        mysqli_stmt_close($stmt);
+      } else {
+        $errors[] = "Unable to check account details.";
       }
-      mysqli_stmt_close($stmt);
     }
 
+    // Create account
     if (empty($errors)) {
-      $stmt = mysqli_prepare($conn, "INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-      mysqli_stmt_bind_param($stmt, "sss", $username, $email, $password);
-      if (mysqli_stmt_execute($stmt)) {
-        $new_id = mysqli_insert_id($conn);
-        mysqli_stmt_close($stmt);
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = (int)$new_id;
-        $_SESSION['username'] = $username;
-        header("Location: Dashboard.php");
-        exit();
+      $hashed_password =
+        $password;
+
+      $stmt = mysqli_prepare(
+        $conn,
+        "INSERT INTO users (username, email, password)
+                 VALUES (?, ?, ?)"
+      );
+
+      if ($stmt) {
+        mysqli_stmt_bind_param(
+          $stmt,
+          "sss",
+          $username,
+          $email,
+          $hashed_password
+        );
+
+        if (mysqli_stmt_execute($stmt)) {
+          $new_id = mysqli_insert_id($conn);
+          mysqli_stmt_close($stmt);
+
+          session_regenerate_id(true);
+
+          $_SESSION['user_id'] = (int)$new_id;
+          $_SESSION['username'] = $username;
+
+          header("Location: Dashboard.php");
+          exit();
+        } else {
+          $errors[] = "Registration failed. Please try again.";
+          mysqli_stmt_close($stmt);
+        }
       } else {
-        $errors[] = "Registration failed. Please try again.";
-        mysqli_stmt_close($stmt);
+        $errors[] = "Unable to create account.";
       }
     }
   }
@@ -126,7 +223,7 @@ $slides = [
 <html lang="en">
 
 <head>
-  <title>NOVELSTORE: Login & Register</title>
+  <title>NOVELSTORE - Login & Register</title>
   <?php include 'include/Links.php'; ?>
 </head>
 
@@ -197,7 +294,7 @@ $slides = [
         </div>
         <?php endif; ?>
 
-        <!-- login form -->
+        <!-- LOGIN FORM -->
         <form method="POST" action="" id="loginFormView"
           class="auth-form-view <?php echo $active_form === 'login' ? 'is-active' : ''; ?>">
           <div class="clean-field">
@@ -282,21 +379,33 @@ $slides = [
     if (mode === 'register') {
       loginView.classList.remove('is-active');
       registerView.classList.add('is-active');
+
       headingTitle.textContent = 'Create Account';
       headingSub.textContent = 'Join NOVELSTORE and start reading';
-      modeChip.innerHTML = '<i class="fa-solid fa-user-plus"></i> New Reader';
-      if (window.location.hash !== '#register') {
-        history.replaceState(null, '', '#register');
-      }
+
+      modeChip.innerHTML =
+        '<i class="fa-solid fa-user-plus"></i> New Reader';
+
+      history.replaceState(
+        null,
+        '',
+        window.location.pathname + window.location.search + '#register'
+      );
     } else {
       registerView.classList.remove('is-active');
       loginView.classList.add('is-active');
-      headingTitle.textContent = 'Hi Reader';
+
+      headingTitle.textContent = 'Hello Reader';
       headingSub.textContent = 'Welcome to NOVELSTORE';
-      modeChip.innerHTML = '<i class="fa-solid fa-book-open"></i> Reader Portal';
-      if (window.location.hash === '#register') {
-        history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
+
+      modeChip.innerHTML =
+        '<i class="fa-solid fa-book-open"></i> Reader Portal';
+
+      history.replaceState(
+        null,
+        '',
+        window.location.pathname + window.location.search
+      );
     }
   }
 
@@ -339,7 +448,7 @@ body.auth-split-body {
   box-sizing: border-box;
   overflow-x: hidden;
   color: #30231c;
-  font-family: var(--font-body, "DM Sans", sans-serif);
+  font-family: var(--font-body, "DM Sans"), Arial, sans-serif;
   background: #160f0d url("Assets/Authmn.jpg") center / cover no-repeat fixed;
   position: relative;
   isolation: isolate;

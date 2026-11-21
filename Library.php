@@ -8,14 +8,14 @@ $rating_result = mysqli_query($conn, "
     SELECT novel_id, title, author, cover_image, price, rating
     FROM novels
     ORDER BY rating DESC, novel_id DESC
-    LIMIT 4
+    LIMIT 5
 ");
 
 $latest_result = mysqli_query($conn, "
     SELECT novel_id, title, author, cover_image, price, rating
     FROM novels
     ORDER BY created_at DESC, novel_id DESC
-    LIMIT 4
+    LIMIT 5
 ");
 
 $all_result = mysqli_query($conn, "
@@ -129,4 +129,6 @@ $all_result = mysqli_query($conn, "
 
 </div>
 
-<?php if ($standalone_page) { include 'include/dashboard_end.php'; } ?>
+<?php if ($standalone_page) {
+  include 'include/dashboard_end.php';
+} ?>
