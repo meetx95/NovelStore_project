@@ -88,49 +88,143 @@ $layout_page = 'Reader';
 include 'include/dashboard_start.php';
 ?>
 
-<div class="reader-page-content">
-  <div class="section-title">
-    <a href="novel.php?id=<?php echo (int)$novel_id; ?>" class="back-link">
-      <i class="fa-solid fa-arrow-left"></i>&nbsp; Book Details
+<style>
+  .ns-reader-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ns-reader-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .ns-reader-crumb {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary, #6b584b);
+    background: var(--surface, #fffdf8);
+    border: 1px solid var(--border-color, #dfd0c0);
+    padding: 6px 14px;
+    border-radius: 999px;
+  }
+
+  .ns-reader-sheet {
+    max-width: 860px;
+    width: 100%;
+    margin: 0 auto;
+    background: var(--surface, #fffdf8);
+    border: 1px solid var(--border-color, #dfd0c0);
+    border-radius: 24px;
+    padding: clamp(24px, 5vw, 54px);
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(62, 39, 35, 0.11));
+  }
+
+  .ns-reader-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--primary-light, #9a6b4f);
+    margin-bottom: 8px;
+  }
+
+  .ns-reader-sheet h1 {
+    margin: 0 0 6px;
+    font-family: var(--font-heading, "Playfair Display", serif);
+    font-size: clamp(26px, 3.4vw, 38px);
+    line-height: 1.2;
+    color: var(--primary-dark, #3e2723);
+  }
+
+  .ns-reader-byline {
+    margin: 0 0 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border-light, #eee5db);
+    font-size: 13.5px;
+    color: var(--text-secondary, #6b584b);
+  }
+
+  .ns-reader-body {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(16.5px, 1.35vw, 19px);
+    line-height: 1.95;
+    color: var(--text, #2c211b);
+  }
+
+  .ns-reader-body p {
+    margin: 0 0 1.35em;
+  }
+
+  .ns-reader-footer-nav {
+    margin-top: 36px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-light, #eee5db);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .ns-reader-progress {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-secondary, #6b584b);
+  }
+</style>
+
+<div class="reader-page-content ns-reader-wrap">
+  <div class="ns-reader-top">
+    <a href="novel.php?id=<?php echo (int)$novel_id; ?>" class="ns-back-pill">
+      <i class="fa-solid fa-arrow-left"></i> Book Details
     </a>
-    <span class="muted">
-      <?php echo htmlspecialchars($novel['title']); ?> · Chapter <?php echo (int)$chapter['chapter_number']; ?>
+    <span class="ns-reader-crumb">
+      <?php echo htmlspecialchars($novel['title'], ENT_QUOTES, 'UTF-8'); ?> &middot; Chapter
+      <?php echo (int)$chapter['chapter_number']; ?>
     </span>
   </div>
 
-  <article class="reader-card-dashboard">
-    <p class="eyebrow">CHAPTER <?php echo (int)$chapter['chapter_number']; ?></p>
-    <h1><?php echo htmlspecialchars($chapter['chapter_title']); ?></h1>
-    <p class="reader-author-dashboard">By <?php echo htmlspecialchars($novel['author']); ?></p>
+  <article class="reader-card-dashboard ns-reader-sheet">
+    <span class="ns-reader-eyebrow">CHAPTER <?php echo (int)$chapter['chapter_number']; ?></span>
+    <h1><?php echo htmlspecialchars($chapter['chapter_title'], ENT_QUOTES, 'UTF-8'); ?></h1>
+    <p class="ns-reader-byline">By <?php echo htmlspecialchars($novel['author'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-    <div class="reader-content-dashboard">
+    <div class="reader-content-dashboard ns-reader-body">
       <?php
       $paragraphs = preg_split("/\r\n|\r|\n/", trim($chapter['content']));
       foreach ($paragraphs as $paragraph) {
         if (trim($paragraph) !== '') {
-          echo '<p>' . nl2br(htmlspecialchars($paragraph)) . '</p>';
+          echo '<p>' . nl2br(htmlspecialchars($paragraph, ENT_QUOTES, 'UTF-8')) . '</p>';
         }
       }
       ?>
     </div>
 
-    <div class="reader-chapter-nav">
+    <div class="reader-chapter-nav ns-reader-footer-nav">
       <?php if ($chapter_number > $first): ?>
-        <a class="secondary-action" href="reader.php?novel_id=<?php echo $novel_id; ?>&chapter=<?php echo $chapter_number - 1; ?>">
-          <i class="fa-solid fa-angle-left"></i>&nbsp; Previous
+        <a class="ns-btn-outline"
+          href="reader.php?novel_id=<?php echo $novel_id; ?>&chapter=<?php echo $chapter_number - 1; ?>">
+          <i class="fa-solid fa-angle-left"></i> Previous
         </a>
       <?php else: ?>
         <span></span>
       <?php endif; ?>
 
-      <span>Chapter <?php echo $chapter_number; ?> of <?php echo $last; ?></span>
+      <span class="ns-reader-progress">Chapter <?php echo $chapter_number; ?> of <?php echo $last; ?></span>
 
       <?php if ($chapter_number < $last): ?>
-        <a class="primary-btn" href="reader.php?novel_id=<?php echo $novel_id; ?>&chapter=<?php echo $chapter_number + 1; ?>">
-          Next&nbsp; <i class="fa-solid fa-angle-right"></i>
+        <a class="ns-btn-primary"
+          href="reader.php?novel_id=<?php echo $novel_id; ?>&chapter=<?php echo $chapter_number + 1; ?>">
+          Next <i class="fa-solid fa-angle-right"></i>
         </a>
       <?php else: ?>
-        <span class="muted">End of book</span>
+        <span class="ns-reader-progress">End of book</span>
       <?php endif; ?>
     </div>
   </article>

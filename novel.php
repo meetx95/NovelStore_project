@@ -175,30 +175,425 @@ $layout_page = 'Book';
 include 'include/dashboard_start.php';
 ?>
 
-<div class="book-page">
+<style>
+.ns-book-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
 
-  <div class="section-title">
-    <a href="Dashboard.php?page=Home" class="back-link">
-      <i class="fa-solid fa-arrow-left"></i>&nbsp; Back to Library
+.ns-book-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ns-back-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--surface, #fffdf8);
+  border: 1px solid var(--border-color, #dfd0c0);
+  color: var(--primary-dark, #3e2723);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.ns-back-pill:hover {
+  background: var(--surface-2, #f0e6da);
+  border-color: var(--secondary, #b08968);
+}
+
+.ns-book-hero {
+  background: linear-gradient(135deg, var(--surface, #fffdf8) 0%, var(--surface-2, #f0e6da) 100%);
+  border: 1px solid var(--border-color, #dfd0c0);
+  border-radius: 24px;
+  padding: clamp(20px, 3.5vw, 38px);
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(62, 39, 35, 0.11));
+}
+
+.ns-book-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  gap: clamp(20px, 3.5vw, 36px);
+  align-items: start;
+}
+
+.ns-book-cover {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 16px 32px rgba(44, 33, 27, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.ns-book-genre {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--surface-3, #e5d5c4);
+  color: var(--primary-dark, #3e2723);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.ns-book-title {
+  margin: 0 0 6px;
+  font-family: var(--font-heading, "Playfair Display", serif);
+  font-size: clamp(28px, 3.6vw, 42px);
+  line-height: 1.15;
+  color: var(--primary-dark, #3e2723);
+}
+
+.ns-book-author {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary, #6b584b);
+}
+
+.ns-book-rating-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.ns-stars-gold {
+  color: var(--rating, #c9953b);
+  letter-spacing: 1px;
+  font-size: 15px;
+}
+
+.ns-book-desc {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text, #2c211b);
+  max-width: 720px;
+}
+
+.ns-book-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 520px;
+  margin-bottom: 22px;
+}
+
+.ns-mini-stat {
+  background: var(--surface, #fffdf8);
+  border: 1px solid var(--border-color, #dfd0c0);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.ns-mini-stat strong {
+  display: block;
+  font-size: 17px;
+  color: var(--primary-dark, #3e2723);
+}
+
+.ns-mini-stat span {
+  font-size: 11.5px;
+  color: var(--text-secondary, #6b584b);
+}
+
+.ns-book-action-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ns-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  background: var(--primary, #6f4e37);
+  border: 1px solid var(--primary, #6f4e37);
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.ns-btn-primary:hover {
+  background: var(--primary-dark, #3e2723);
+  transform: translateY(-1px);
+}
+
+.ns-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: var(--surface, #fffdf8);
+  border: 1px solid var(--border-color, #dfd0c0);
+  color: var(--primary-dark, #3e2723);
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ns-btn-outline:hover {
+  background: var(--surface-2, #f0e6da);
+  border-color: var(--secondary, #b08968);
+}
+
+.ns-price-tag {
+  margin-left: auto;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background: var(--surface, #fffdf8);
+  border: 1px solid var(--border-color, #dfd0c0);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary-dark, #3e2723);
+}
+
+.ns-chapter-banner {
+  background: var(--surface, #fffdf8);
+  border: 1px solid var(--border-color, #dfd0c0);
+  border-radius: 18px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(62, 39, 35, 0.07));
+}
+
+.ns-chapter-banner h3 {
+  margin: 0 0 4px;
+  font-family: var(--font-heading, "Playfair Display", serif);
+  font-size: 18px;
+  color: var(--primary-dark, #3e2723);
+}
+
+.ns-chapter-banner p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary, #6b584b);
+}
+
+.ns-rating-box {
+  background: var(--surface, #fffdf8);
+  border: 1px solid var(--border-color, #dfd0c0);
+  border-radius: 20px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(62, 39, 35, 0.07));
+}
+
+.ns-rating-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ns-rating-badge-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--surface-2, #f0e6da);
+  color: var(--rating, #c9953b);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.ns-rating-form {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ns-star-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-light, #fbf8f3);
+  border: 1px solid var(--border-color, #dfd0c0);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.ns-star-lbl {
+  cursor: pointer;
+  font-size: 17px;
+  color: #cfc1b4;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.ns-star-lbl input {
+  display: none;
+}
+
+.ns-star-lbl:hover {
+  transform: scale(1.15);
+  color: var(--rating, #c9953b);
+}
+
+.ns-star-lbl.is-selected {
+  color: var(--rating, #c9953b);
+}
+
+.ns-sec-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.ns-sec-title h2 {
+  margin: 0;
+  font-family: var(--font-heading, "Playfair Display", serif);
+  font-size: 22px;
+  color: var(--primary-dark, #3e2723);
+}
+
+.ns-grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 18px;
+}
+
+.ns-card-item {
+  background: var(--surface, #fffdf8);
+  border: 1px solid var(--border-color, #dfd0c0);
+  border-radius: 18px;
+  padding: 9px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(62, 39, 35, 0.07));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ns-card-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(62, 39, 35, 0.11));
+}
+
+.ns-card-item img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.ns-card-info {
+  padding: 10px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 4px;
+}
+
+.ns-card-info h3 {
+  margin: 0;
+  font-family: var(--font-heading, "Playfair Display", serif);
+  font-size: 15px;
+  color: var(--primary-dark, #3e2723);
+  line-height: 1.3;
+}
+
+.ns-card-info p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary, #6b584b);
+}
+
+.ns-card-cta {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.ns-card-cta a {
+  display: block;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--primary, #6f4e37);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ns-card-cta a:hover {
+  background: var(--primary-dark, #3e2723);
+}
+
+@media (max-width: 768px) {
+  .ns-book-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ns-book-cover {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+
+  .ns-book-stats-row {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+}
+</style>
+
+<div class="book-page ns-book-wrap">
+
+  <div class="ns-book-topbar">
+    <a href="Dashboard.php?page=Home" class="ns-back-pill">
+      <i class="fa-solid fa-arrow-left"></i> Back to Library
     </a>
   </div>
 
-  <article class="book-detail-card">
-    <div class="book-detail-main">
+  <article class="book-detail-card ns-book-hero">
+    <div class="book-detail-main ns-book-hero-grid">
 
-      <img class="book-detail-cover" src="Assets/Cover/<?php echo htmlspecialchars($novel['cover_image']); ?>"
-        alt="<?php echo htmlspecialchars($novel['title']); ?>">
+      <img class="book-detail-cover ns-book-cover"
+        src="Assets/Cover/<?php echo htmlspecialchars($novel['cover_image'], ENT_QUOTES, 'UTF-8'); ?>"
+        alt="<?php echo htmlspecialchars($novel['title'], ENT_QUOTES, 'UTF-8'); ?>">
 
       <div class="book-detail-info">
         <?php if (!empty($novel['genre'])): ?>
-        <span class="eyebrow"><?php echo htmlspecialchars($novel['genre']); ?></span>
+        <span class="ns-book-genre"><?php echo htmlspecialchars($novel['genre'], ENT_QUOTES, 'UTF-8'); ?></span>
         <?php endif; ?>
 
-        <h1><?php echo htmlspecialchars($novel['title']); ?></h1>
-        <p class="book-detail-author">By <?php echo htmlspecialchars($novel['author']); ?></p>
+        <h1 class="ns-book-title"><?php echo htmlspecialchars($novel['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
+        <p class="ns-book-author">By <?php echo htmlspecialchars($novel['author'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-        <div class="book-rating-display">
-          <span class="book-rating-stars">
+        <div class="ns-book-rating-line">
+          <span class="ns-stars-gold">
             <?php
             $display_rating = $average_rating > 0 ? $average_rating : 0;
             for ($i = 1; $i <= 5; $i++) {
@@ -207,72 +602,75 @@ include 'include/dashboard_start.php';
             ?>
           </span>
           <strong><?php echo number_format($display_rating, 1); ?>/5</strong>
-          <span class="muted"><?php echo $total_ratings; ?> Ratings</span>
+          <span>(<?php echo $total_ratings; ?> <?php echo $total_ratings === 1 ? 'Rating' : 'Ratings'; ?>)</span>
         </div>
 
-        <p class="book-description">
-          <?php echo nl2br(htmlspecialchars(trim($novel['description'] ?? ''))); ?>
+        <p class="ns-book-desc">
+          <?php echo nl2br(htmlspecialchars(trim($novel['description'] ?? ''), ENT_QUOTES, 'UTF-8')); ?>
         </p>
 
-        <div class="book-meta-grid">
-          <div class="book-meta-box">
+        <div class="ns-book-stats-row">
+          <div class="ns-mini-stat">
             <strong><?php echo $total_chapters; ?></strong>
             <span>Chapters</span>
           </div>
-          <div class="book-meta-box">
+          <div class="ns-mini-stat">
             <strong>Reading</strong>
             <span>Experience</span>
           </div>
-          <div class="book-meta-box">
+          <div class="ns-mini-stat">
             <strong><?php echo $average_rating > 0 ? $average_rating : 'New'; ?></strong>
             <span>Reader Score</span>
           </div>
         </div>
 
-        <div class="book-actions">
+        <div class="ns-book-action-bar">
           <?php if ((float)$novel['price'] == 0 || $purchased): ?>
-          <a class="primary-btn" href="reader.php?novel_id=<?php echo $novel_id; ?>">
-            <i class="fa-solid fa-book-open"></i>&nbsp; Read Now
+          <a class="ns-btn-primary" href="reader.php?novel_id=<?php echo $novel_id; ?>">
+            <i class="fa-solid fa-book-open"></i> Read Now
           </a>
           <?php else: ?>
-          <a class="primary-btn" href="purchase.php?novel_id=<?php echo $novel_id; ?>">
-            <i class="fa-solid fa-lock-open"></i>&nbsp; Purchase & Read
+          <a class="ns-btn-primary" href="purchase.php?novel_id=<?php echo $novel_id; ?>">
+            <i class="fa-solid fa-lock-open"></i> Purchase &amp; Read
           </a>
           <?php endif; ?>
 
-          <form method="POST">
-            <button type="submit" name="wishlist_action" value="1" class="secondary-action dashboard-form-button">
+          <form method="POST" style="margin:0;">
+            <button type="submit" name="wishlist_action" value="1" class="ns-btn-outline">
               <i class="<?php echo $in_wishlist ? 'fa-solid' : 'fa-regular'; ?> fa-heart"></i>
-              <?php echo $in_wishlist ? ' Saved' : ' Wishlist'; ?>
+              <?php echo $in_wishlist ? 'Saved' : 'Wishlist'; ?>
             </button>
           </form>
-        </div>
 
-        <div class="book-price">
-          <?php if ((float)$novel['price'] == 0): ?>
-          Free
-          <?php else: ?>
-          ₹<?php echo number_format((float)$novel['price'], 2); ?>
-          <?php endif; ?>
+          <span class="ns-price-tag">
+            <?php if ((float)$novel['price'] == 0): ?>
+            Free
+            <?php else: ?>
+            ₹<?php echo number_format((float)$novel['price'], 2); ?>
+            <?php endif; ?>
+          </span>
         </div>
       </div>
+
     </div>
   </article>
 
-  <section class="book-section-block">
-    <div class="section-title">
+  <section>
+    <div class="ns-sec-title">
       <h2>Explore the Chapters</h2>
-      <span class="muted"><?php echo $total_chapters; ?> chapters</span>
+      <span><?php echo $total_chapters; ?> chapters</span>
     </div>
 
     <?php if ($first_chapter): ?>
-    <div class="history-item">
+    <div class="ns-chapter-banner">
       <div>
-        <h3>Chapter <?php echo (int)$first_chapter['chapter_number']; ?>:
-          <?php echo htmlspecialchars($first_chapter['chapter_title']); ?></h3>
+        <h3>
+          Chapter <?php echo (int)$first_chapter['chapter_number']; ?>:
+          <?php echo htmlspecialchars($first_chapter['chapter_title'], ENT_QUOTES, 'UTF-8'); ?>
+        </h3>
         <p>Begin your journey with the first chapter.</p>
       </div>
-      <a class="primary-btn"
+      <a class="ns-btn-primary"
         href="reader.php?novel_id=<?php echo $novel_id; ?>&chapter=<?php echo (int)$first_chapter['chapter_number']; ?>">
         Start Reading
       </a>
@@ -282,82 +680,78 @@ include 'include/dashboard_start.php';
     <?php endif; ?>
   </section>
 
-
-  <section class="book-section-block" id="rating">
-
-    <div class="section-title">
+  <section id="rating">
+    <div class="ns-sec-title">
       <h2>Rate This Novel</h2>
-      <span class="muted">
+      <span>
         <?php echo $user_rating > 0
           ? 'You rated ' . $user_rating . '/5'
           : 'Your opinion matters'; ?>
       </span>
     </div>
 
-    <div class="dashboard-rating-card">
-
-      <div class="rating-information">
-        <div class="rating-icon">
+    <div class="ns-rating-box">
+      <div class="ns-rating-left">
+        <div class="ns-rating-badge-icon">
           <i class="fas fa-star"></i>
         </div>
-
         <div>
           <strong>
             <?php echo $user_rating > 0
               ? 'Update your rating'
               : 'Enjoyed this novel?'; ?>
           </strong>
-
-          <p class="muted">
+          <p style="margin:2px 0 0; font-size:13px; color:var(--text-secondary, #6b584b);">
             Share your experience with other readers.
           </p>
         </div>
       </div>
 
-      <form method="POST" class="dashboard-rating-form">
-
+      <form method="POST" class="ns-rating-form" id="novelRatingForm">
         <input type="hidden" name="rating_action" value="1">
 
-        <div class="star-rating">
+        <div class="ns-star-group">
           <?php for ($i = 1; $i <= 5; $i++): ?>
-          <label class="star-option" title="<?php echo $i; ?> out of 5 stars">
+          <label class="ns-star-lbl <?php echo ($user_rating >= $i) ? 'is-selected' : ''; ?>"
+            title="<?php echo $i; ?> out of 5 stars" data-val="<?php echo $i; ?>">
             <input type="radio" name="rating" value="<?php echo $i; ?>"
               <?php echo $user_rating === $i ? 'checked' : ''; ?> required>
-
             <i class="fas fa-star"></i>
           </label>
           <?php endfor; ?>
         </div>
 
-        <button type="submit" class="primary-btn dashboard-form-button">
+        <button type="submit" class="ns-btn-primary">
           <i class="fas fa-star"></i>
           <?php echo $user_rating > 0 ? 'Update Rating' : 'Submit Rating'; ?>
         </button>
-
       </form>
-
     </div>
   </section>
 
-
   <?php if (count($related_books) > 0): ?>
-  <section class="book-section-block">
-    <div class="section-title">
+  <section>
+    <div class="ns-sec-title">
       <h2>More Like This</h2>
     </div>
 
-    <div class="novel-grid">
+    <div class="ns-grid-cards">
       <?php foreach ($related_books as $book): ?>
-      <article class="novel-card">
-        <img src="Assets/Cover/<?php echo htmlspecialchars($book['cover_image']); ?>" alt="Cover">
-        <div class="novel-info">
-          <h3><?php echo htmlspecialchars($book['title']); ?></h3>
-          <p><?php echo htmlspecialchars($book['author']); ?></p>
-          <p class="rating"><b>Rating:</b> <?php echo number_format((float)$book['rating'], 1); ?>/5</p>
-          <span class="<?php echo (float)$book['price'] == 0 ? 'free' : 'price'; ?>">
-            <?php echo (float)$book['price'] == 0 ? 'Free' : '₹' . number_format((float)$book['price'], 2); ?>
-          </span>
-          <a class="card-link" href="novel.php?id=<?php echo (int)$book['novel_id']; ?>">View Book</a>
+      <?php $is_rel_free = (float)$book['price'] == 0; ?>
+      <article class="ns-card-item">
+        <img src="Assets/Cover/<?php echo htmlspecialchars($book['cover_image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Cover">
+        <div class="ns-card-info">
+          <h3><?php echo htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+          <p><?php echo htmlspecialchars($book['author'], ENT_QUOTES, 'UTF-8'); ?></p>
+          <p style="color:var(--warning, #c28b3c); font-weight:700;">
+            ★ <?php echo number_format((float)$book['rating'], 1); ?>/5 •
+            <span style="color:var(--primary-dark, #3e2723);">
+              <?php echo $is_rel_free ? 'Free' : '₹' . number_format((float)$book['price'], 2); ?>
+            </span>
+          </p>
+          <div class="ns-card-cta">
+            <a href="novel.php?id=<?php echo (int)$book['novel_id']; ?>">View Book</a>
+          </div>
         </div>
       </article>
       <?php endforeach; ?>
@@ -365,23 +759,28 @@ include 'include/dashboard_start.php';
   </section>
   <?php endif; ?>
 
-  <section class="book-section-block">
-    <div class="section-title">
+  <section>
+    <div class="ns-sec-title">
       <h2>More Books to Discover</h2>
     </div>
 
-    <div class="novel-grid">
+    <div class="ns-grid-cards">
       <?php while ($book = mysqli_fetch_assoc($more_books_result)): ?>
-      <article class="novel-card">
-        <img src="Assets/Cover/<?php echo htmlspecialchars($book['cover_image']); ?>" alt="Cover">
-        <div class="novel-info">
-          <h3><?php echo htmlspecialchars($book['title']); ?></h3>
-          <p><?php echo htmlspecialchars($book['author']); ?></p>
-          <p class="rating"><b>Rating:</b> <?php echo number_format((float)$book['rating'], 1); ?>/5</p>
-          <span class="<?php echo (float)$book['price'] == 0 ? 'free' : 'price'; ?>">
-            <?php echo (float)$book['price'] == 0 ? 'Free' : '₹' . number_format((float)$book['price'], 2); ?>
-          </span>
-          <a class="card-link" href="novel.php?id=<?php echo (int)$book['novel_id']; ?>">View Book</a>
+      <?php $is_more_free = (float)$book['price'] == 0; ?>
+      <article class="ns-card-item">
+        <img src="Assets/Cover/<?php echo htmlspecialchars($book['cover_image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Cover">
+        <div class="ns-card-info">
+          <h3><?php echo htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+          <p><?php echo htmlspecialchars($book['author'], ENT_QUOTES, 'UTF-8'); ?></p>
+          <p style="color:var(--warning, #c28b3c); font-weight:700;">
+            ★ <?php echo number_format((float)$book['rating'], 1); ?>/5 •
+            <span style="color:var(--primary-dark, #3e2723);">
+              <?php echo $is_more_free ? 'Free' : '₹' . number_format((float)$book['price'], 2); ?>
+            </span>
+          </p>
+          <div class="ns-card-cta">
+            <a href="novel.php?id=<?php echo (int)$book['novel_id']; ?>">View Book</a>
+          </div>
         </div>
       </article>
       <?php endwhile; ?>
@@ -389,5 +788,24 @@ include 'include/dashboard_start.php';
   </section>
 
 </div>
+
+<script>
+(function() {
+  const labels = document.querySelectorAll('#novelRatingForm .ns-star-lbl');
+
+  function paintStars(selectedVal) {
+    labels.forEach(lbl => {
+      const val = parseInt(lbl.getAttribute('data-val'), 10);
+      lbl.classList.toggle('is-selected', selectedVal > 0 && val <= selectedVal);
+    });
+  }
+  labels.forEach(lbl => {
+    lbl.addEventListener('click', () => {
+      const val = parseInt(lbl.getAttribute('data-val'), 10);
+      paintStars(val);
+    });
+  });
+})();
+</script>
 
 <?php include 'include/dashboard_end.php'; ?>
