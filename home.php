@@ -26,7 +26,7 @@ $result = mysqli_query($conn, "
     SELECT novel_id, title, author, description, cover_image, price, rating
     FROM novels
     ORDER BY rating DESC, novel_id DESC
-    LIMIT 8
+    LIMIT 14
 ");
 if ($result) {
   while ($row = mysqli_fetch_assoc($result)) {

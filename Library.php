@@ -22,7 +22,7 @@ $latest_result = mysqli_query($conn, "
 $all_result = mysqli_query($conn, "
     SELECT novel_id, title, author, cover_image, price, rating
     FROM novels
-    ORDER BY title ASC
+    ORDER BY novel_id ASC
 ");
 
 function renderLibraryCard($novel)
