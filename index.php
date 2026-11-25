@@ -14,16 +14,6 @@ if (isset($_SESSION['user_id'])) {
 </head>
 
 <body class="novel-showcase-body">
-  <!-- <div class="top-ticker" aria-label="NovelStore announcements">
-    <div class="ticker-track">
-      <?php //for ($i = 0; $i < 4; $i++) : 
-      ?>
-      <span>YOUR NEXT OBSESSION IS A PAGE AWAY <b>✦</b> NEW STORIES, NEW WORLDS <b>✦</b> READ AT YOUR OWN PACE
-        <b>✦</b></span>
-      <?php //endfor; 
-      ?>
-    </div>
-  </div> -->
 
   <header class="grid-navbar">
     <a href="index.php" class="nav-brand" aria-label="NovelStore home"><span
@@ -72,11 +62,11 @@ if (isset($_SESSION['user_id'])) {
 
     <div class="hero-bottom">
       <div class="hero-copy"><span class="hero-eyebrow">TURN THE PAGE</span>
-        <h1>Find your <em>next world.</em></h1>
+        <h1>Find your <em>Next World.</em></h1>
         <p>Stories that stay with you.</p>
       </div>
       <div class="hero-cta-group"><a href="Login_register.php" class="cta-primary-glow">Start reading
-          <span>↗</span></a><a href="Login_register.php#register" class="cta-secondary-dark">Explore collection</a>
+        </a><a href="Login_register.php#register" class="cta-secondary-dark">Explore collection</a>
       </div>
     </div>
   </main>
@@ -86,72 +76,72 @@ if (isset($_SESSION['user_id'])) {
   </footer>
 
   <script>
-  (() => {
-    const track = document.getElementById('novelSlider');
-    if (!track) return;
-    const cards = [...track.querySelectorAll('.slider-card')];
-    const dotsWrap = document.getElementById('sliderDots');
-    const prev = document.querySelector('.slider-prev');
-    const next = document.querySelector('.slider-next');
-    let active = 0,
-      timer, startX = 0;
-    const mod = (n) => (n + cards.length) % cards.length;
+    (() => {
+      const track = document.getElementById('novelSlider');
+      if (!track) return;
+      const cards = [...track.querySelectorAll('.slider-card')];
+      const dotsWrap = document.getElementById('sliderDots');
+      const prev = document.querySelector('.slider-prev');
+      const next = document.querySelector('.slider-next');
+      let active = 0,
+        timer, startX = 0;
+      const mod = (n) => (n + cards.length) % cards.length;
 
-    cards.forEach((_, i) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.setAttribute('aria-label', `Show book ${i + 1}`);
-      dot.addEventListener('click', () => {
-        active = i;
+      cards.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Show book ${i + 1}`);
+        dot.addEventListener('click', () => {
+          active = i;
+          render();
+          restart();
+        });
+        dotsWrap.appendChild(dot);
+      });
+      const dots = [...dotsWrap.children];
+
+      function render() {
+        cards.forEach((card, i) => {
+          let offset = i - active;
+          if (offset > cards.length / 2) offset -= cards.length;
+          if (offset < -cards.length / 2) offset += cards.length;
+          const abs = Math.abs(offset);
+          card.style.setProperty('--offset', offset);
+          card.style.setProperty('--abs', abs);
+          card.classList.toggle('is-active', offset === 0);
+          card.style.opacity = abs > 3 ? '0' : String(1 - abs * .17);
+          card.style.pointerEvents = abs > 2 ? 'none' : 'auto';
+          dots[i].classList.toggle('active', i === active);
+        });
+      }
+
+      function step(dir) {
+        active = mod(active + dir);
         render();
         restart();
-      });
-      dotsWrap.appendChild(dot);
-    });
-    const dots = [...dotsWrap.children];
+      }
 
-    function render() {
-      cards.forEach((card, i) => {
-        let offset = i - active;
-        if (offset > cards.length / 2) offset -= cards.length;
-        if (offset < -cards.length / 2) offset += cards.length;
-        const abs = Math.abs(offset);
-        card.style.setProperty('--offset', offset);
-        card.style.setProperty('--abs', abs);
-        card.classList.toggle('is-active', offset === 0);
-        card.style.opacity = abs > 3 ? '0' : String(1 - abs * .17);
-        card.style.pointerEvents = abs > 2 ? 'none' : 'auto';
-        dots[i].classList.toggle('active', i === active);
+      function restart() {
+        clearInterval(timer);
+        timer = setInterval(() => {
+          active = mod(active + 1);
+          render();
+        }, 4500);
+      }
+      prev.addEventListener('click', () => step(-1));
+      next.addEventListener('click', () => step(1));
+      track.addEventListener('pointerdown', e => {
+        startX = e.clientX;
       });
-    }
-
-    function step(dir) {
-      active = mod(active + dir);
+      track.addEventListener('pointerup', e => {
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 45) step(dx < 0 ? 1 : -1);
+      });
+      document.querySelector('.coverflow').addEventListener('mouseenter', () => clearInterval(timer));
+      document.querySelector('.coverflow').addEventListener('mouseleave', restart);
       render();
       restart();
-    }
-
-    function restart() {
-      clearInterval(timer);
-      timer = setInterval(() => {
-        active = mod(active + 1);
-        render();
-      }, 4500);
-    }
-    prev.addEventListener('click', () => step(-1));
-    next.addEventListener('click', () => step(1));
-    track.addEventListener('pointerdown', e => {
-      startX = e.clientX;
-    });
-    track.addEventListener('pointerup', e => {
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 45) step(dx < 0 ? 1 : -1);
-    });
-    document.querySelector('.coverflow').addEventListener('mouseenter', () => clearInterval(timer));
-    document.querySelector('.coverflow').addEventListener('mouseleave', restart);
-    render();
-    restart();
-  })();
+    })();
   </script>
 </body>
 

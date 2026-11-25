@@ -1,26 +1,26 @@
 :root {
-  --primary: #6f4e37;
-  --primary-dark: #3e2723;
-  --primary-light: #9a6b4f;
-  --secondary: #b08968;
-  --accent: #d6bfae;
-  --bg: #f5efe6;
-  --bg-light: #fbf8f3;
-  --bg-dark: #2b1d17;
+  --primary: #76513b;
+  --primary-dark: #493021;
+  --primary-light: #a77a5d;
+  --secondary: #b58b68;
+  --accent: #d9b98e;
+  --bg: #f7f4ef;
+  --bg-light: #fcfaf7;
+  --bg-dark: #30251f;
   --bg-mid: #8b6248;
-  --surface: #fffdf8;
-  --surface-2: #f0e6da;
-  --surface-3: #e5d5c4;
-  --text: #2c211b;
-  --text-secondary: #6b584b;
+  --surface: #fffefa;
+  --surface-2: #f2ece4;
+  --surface-3: #e9ded1;
+  --text: #29231f;
+  --text-secondary: #82766d;
   --text-muted: #9a8879;
   --text-muted-black: #17120f;
   --white: #ffffff;
   --border-color: #dfd0c0;
-  --border: 1px solid var(--border-color);
+  --border: 1px solid #e9e1d8;
   --border-1: 1px solid var(--bg-dark);
   --border-light: #eee5db;
-  --border-dark: #3a2a21;
+  --border-dark: #d8c9ba;
   --success: #607d5b;
   --danger: #a94b45;
   --warning: #c28b3c;
@@ -45,8 +45,7 @@
     #4e342e 50%,
     #795548 100%
   );
-  --gradient-cover-dark:
-    radial-gradient(
+  --gradient-cover-dark: radial-gradient(
       circle at 15% 20%,
       rgba(255, 255, 255, 0.08),
       transparent 30%
@@ -59,11 +58,11 @@
     linear-gradient(135deg, #3e2723, #241713 60%, #17100d);
   --font-body: "DM Sans", Arial, sans-serif;
   --font-heading: "Playfair Display", Georgia, serif;
-  --font-header: "Arial Black";
+  --font-header: "Playfair Display", Georgia, serif;
   --fs-xs: 11px;
   --fs-sm: 13px;
   --fs-md: 15px;
-  --fs-lg: 18px;
+  --fs-lg: 1.25rem;
   --fs-xl: 24px;
   --fs-2xl: 32px;
   --fs-3xl: 44px;
@@ -80,18 +79,35 @@
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius: 16px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  --radius-lg: 24px;
+  --radius-xl: 30px;
   --radius-pill: 999px;
-  --shadow-sm: 0 2px 8px rgba(62, 39, 35, 0.07);
+  --shadow-sm: 0 3px 12px rgba(57, 39, 27, 0.06);
   --shadow-md: 0 8px 24px rgba(62, 39, 35, 0.11);
-  --shadow-lg: 0 18px 45px rgba(62, 39, 35, 0.15);
+  --shadow-lg: 0 22px 60px rgba(57, 39, 27, 0.14);
   --shadow-hover: 0 18px 35px rgba(62, 39, 35, 0.18);
   --tra-fast: 0.18s ease;
   --tra: 0.28s ease;
   --tra-slow: 0.45s ease;
   --sidebar-width: 250px;
   --content-max: 1500px;
+  --shadow: 0 12px 35px rgba(57, 39, 27, 0.09);
+  --coffee-950: #302018;
+  --coffee-900: #3f2a20;
+  --coffee-800: #5b3d2d;
+  --coffee-700: #76513b;
+  --coffee-600: #906b50;
+  --coffee-300: #d7c3ad;
+  --coffee-200: #e8dbcd;
+  --coffee-100: #f4ede5;
+  --paper: #fcfaf7;
+  --ink: #080707;
+  --muted: #a99a93;
+  --line: #e8dfd6;
+  --soft-shadow: 0 3px 14px rgba(54, 36, 25, 0.07);
+  --card-shadow: 0 8px 24px rgba(54, 36, 25, 0.09);
+  --gold: #c69b80;
+  --cream: #f6f1eb;
 }
 
 * {
@@ -200,7 +216,6 @@ textarea::placeholder {
   color: var(--text-muted);
 }
 
-/* ===== Sty.css ===== */
 .navbar {
   width: 100%;
   min-height: 70px;
@@ -2209,34 +2224,6 @@ textarea::placeholder {
 /* NOVELSTORE — professional visual refresh */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap");
 
-:root {
-  --primary: #76513b;
-  --primary-dark: #493021;
-  --primary-light: #a77a5d;
-  --secondary: #b58b68;
-  --accent: #d9b98e;
-  --bg: #f7f4ef;
-  --bg-light: #fcfaf7;
-  --bg-dark: #30251f;
-  --surface: #fffefa;
-  --surface-2: #f2ece4;
-  --surface-3: #e9ded1;
-  --text: #29231f;
-  --text-secondary: #82766d;
-  --border: 1px solid #e9e1d8;
-  --border-dark: #d8c9ba;
-  --shadow-sm: 0 3px 12px rgba(57, 39, 27, 0.06);
-  --shadow: 0 12px 35px rgba(57, 39, 27, 0.09);
-  --shadow-lg: 0 22px 60px rgba(57, 39, 27, 0.14);
-  --radius: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 30px;
-  --radius-pill: 999px;
-  --font-body: "DM Sans", Arial, sans-serif;
-  --font-header: "Playfair Display", Georgia, serif;
-  --fs-lg: 1.25rem;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -3639,23 +3626,6 @@ textarea {
    NOVELSTORE — responsive design system
    Loaded after the legacy styles so every page shares one UI.
         */
-:root {
-  --coffee-950: #302018;
-  --coffee-900: #3f2a20;
-  --coffee-800: #5b3d2d;
-  --coffee-700: #76513b;
-  --coffee-600: #906b50;
-  --coffee-300: #d7c3ad;
-  --coffee-200: #e8dbcd;
-  --coffee-100: #f4ede5;
-  --paper: #fcfaf7;
-  --ink: #2f2924;
-  --muted: #766b62;
-  --line: #e8dfd6;
-  --soft-shadow: 0 3px 14px rgba(54, 36, 25, 0.07);
-  --card-shadow: 0 8px 24px rgba(54, 36, 25, 0.09);
-}
-
 html {
   min-width: 320px;
   scroll-behavior: smooth;
@@ -4634,13 +4604,6 @@ select {
 
 /* ===== index.css ===== */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap");
-
-:root {
-  --gold: #c69b80;
-  --ink: #080707;
-  --cream: #f6f1eb;
-  --muted: #a99a93;
-}
 
 * {
   box-sizing: border-box;
