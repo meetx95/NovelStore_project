@@ -45,8 +45,7 @@
     #4e342e 50%,
     #795548 100%
   );
-  --gradient-cover-dark:
-      radial-gradient(
+  --gradient-cover-dark: radial-gradient(
       circle at 15% 20%,
       rgba(255, 255, 255, 0.08),
       transparent 30%
@@ -4657,9 +4656,7 @@ body.novel-showcase-body {
   height: 31px;
   border: 1px solid #bd8d72;
   border-radius: 50%;
-  font:
-      italic 17px "Playfair Display",
-      serif;
+  font: italic 17px "Playfair Display", serif;
   color: #d7b39a;
   box-shadow: 0 0 5px #bd8d72;
 }
@@ -4735,13 +4732,13 @@ body.novel-showcase-body {
   position: absolute;
   border-radius: 50%;
   filter: blur(85px);
-  opacity: 0.3;
+  opacity: 0.30;
   pointer-events: none;
 }
 
 .orb-one {
   width: 450px;
-  height: 450px;
+    height: 450px;
   background: #b26e4b;
   left: -150px;
   top: 30%;
@@ -4775,12 +4772,12 @@ body.novel-showcase-body {
 
 .brand-ring {
   width: 20px;
-  height: 20px;
+    height: 20px;
     display: inline-block;
     position: relative;
   border-radius: 50%;
   background: #d0a68b;
-  overflow: hidden;
+    overflow: hidden;
     flex-shrink: 0;
   }
   
@@ -8786,59 +8783,26 @@ body.auth-split-body::after {
 }
 
 /* ===== Readability & typography refresh ===== */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Lora:wght@400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Lora:wght@400;500;600&display=swap');
 :root {
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --font-heading: "Manrope", "Segoe UI", sans-serif;
-    --font-header: "Manrope", "Segoe UI", sans-serif;
-    --font-reading: "Lora", Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: 'Manrope', 'Segoe UI', sans-serif;
+  --font-header: 'Manrope', 'Segoe UI', sans-serif;
+  --font-reading: 'Lora', Georgia, serif;
 }
-html {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body,
-button,
-input,
-select,
-textarea,
-table,
-nav,
-label,
-small,
-p,
-li {
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body, button, input, select, textarea, table, nav, label, small, p, li {
   font-family: var(--font-body) !important;
   letter-spacing: 0.005em;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.section-title,
-.page-title {
+h1, h2, h3, h4, h5, h6, .section-title, .page-title {
   font-family: var(--font-heading) !important;
   letter-spacing: -0.025em;
   line-height: 1.25;
 }
-button,
-input,
-select,
-textarea {
-  font-size: 0.95rem;
-}
-
-body {
-  line-height: 1.65;
-}
-
-.reader-content,
-.chapter-content,
-.novel-text,
-.reading-area {
+button, input, select, textarea { font-size: 0.95rem; }
+body { line-height: 1.65; }
+.reader-content, .chapter-content, .novel-text, .reading-area {
   font-family: var(--font-reading) !important;
   line-height: 1.9;
   letter-spacing: 0.015em;

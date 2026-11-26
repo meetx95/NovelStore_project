@@ -68,7 +68,6 @@ $history_count = countFor(
 
 $username = htmlspecialchars($user['username']);
 $email = htmlspecialchars($user['email']);
-
 $profile_pic = !empty($user['profile_pic'])
   ? "Assets/Profile/" . htmlspecialchars($user['profile_pic'])
   : null;
@@ -87,11 +86,11 @@ $initial = strtoupper(substr($user['username'], 0, 1));
     <div class="profile-main">
       <div class="profile-avatar">
         <?php if ($profile_pic): ?>
-        <img src="<?php echo $profile_pic; ?>" alt="Profile picture">
+          <img src="<?php echo $profile_pic; ?>" alt="Profile picture">
         <?php else: ?>
-        <span>
-          <?php echo $initial; ?>
-        </span>
+          <span>
+            <?php echo $initial; ?>
+          </span>
         <?php endif; ?>
       </div>
 
@@ -229,7 +228,6 @@ $initial = strtoupper(substr($user['username'], 0, 1));
       </div>
     </div>
 
-    <!-- Quick Access -->
     <div class="account-card">
 
       <div class="card-heading">
