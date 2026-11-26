@@ -66,7 +66,6 @@ $history_count = countFor(
   $user_id
 );
 
-
 $username = htmlspecialchars($user['username']);
 $email = htmlspecialchars($user['email']);
 
@@ -88,11 +87,11 @@ $initial = strtoupper(substr($user['username'], 0, 1));
     <div class="profile-main">
       <div class="profile-avatar">
         <?php if ($profile_pic): ?>
-          <img src="<?php echo $profile_pic; ?>" alt="Profile picture">
+        <img src="<?php echo $profile_pic; ?>" alt="Profile picture">
         <?php else: ?>
-          <span>
-            <?php echo $initial; ?>
-          </span>
+        <span>
+          <?php echo $initial; ?>
+        </span>
         <?php endif; ?>
       </div>
 
