@@ -19,19 +19,15 @@ $register_email_val = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-  // LOGIN
+  // login
   if (isset($_POST['login'])) {
     $active_form = 'login';
-
     $email = trim($_POST['login_email'] ?? '');
     $password = $_POST['login_password'] ?? '';
-
     $login_email_val = $email;
-
     if ($email === '' || $password === '') {
       $errors[] = "Please enter email and password.";
     }
-
     if (empty($errors)) {
       $stmt = mysqli_prepare(
         $conn,
@@ -41,31 +37,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       if ($stmt) {
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
-
         $result = mysqli_stmt_get_result($stmt);
         $user = mysqli_fetch_assoc($result);
-
         mysqli_stmt_close($stmt);
-
         $password_valid = false;
-
         if ($user) {
-          // Modern hashed password
+
           if (password_verify($password, $user['password'])) {
             $password_valid = true;
-          }
-          // Temporary support for legacy plain-text accounts
-          elseif ($password === $user['password']) {
+          } elseif ($password === $user['password']) {
             $password_valid = true;
-
-            // Upgrade legacy password to secure hash
             $hashed_password = $password;
-
             $update = mysqli_prepare(
               $conn,
               "UPDATE users SET password = ? WHERE user_id = ?"
             );
-
             if ($update) {
               mysqli_stmt_bind_param(
                 $update,
@@ -73,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $hashed_password,
                 $user['user_id']
               );
-
               mysqli_stmt_execute($update);
               mysqli_stmt_close($update);
             }
@@ -82,10 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($password_valid) {
           session_regenerate_id(true);
-
           $_SESSION['user_id'] = (int)$user['user_id'];
           $_SESSION['username'] = $user['username'];
-
           header("Location: Dashboard.php");
           exit();
         } else {
@@ -97,15 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   }
 
-  // REGISTER
+  // register
   if (isset($_POST['register'])) {
     $active_form = 'register';
-
     $username = trim($_POST['username'] ?? '');
     $email = trim($_POST['register_email'] ?? '');
     $password = $_POST['register_password'] ?? '';
     $confirm = $_POST['confirm_password'] ?? '';
-
     $username_val = $username;
     $register_email_val = $email;
 
@@ -134,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $errors[] = "Passwords do not match.";
     }
 
-    // Check duplicate username/email
+    // check duplicate user/email
     if (empty($errors)) {
       $stmt = mysqli_prepare(
         $conn,
@@ -156,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }
 
-    // Create account
+    // create account
     if (empty($errors)) {
       $hashed_password =
         $password;
@@ -179,12 +160,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mysqli_stmt_execute($stmt)) {
           $new_id = mysqli_insert_id($conn);
           mysqli_stmt_close($stmt);
-
           session_regenerate_id(true);
-
           $_SESSION['user_id'] = (int)$new_id;
           $_SESSION['username'] = $username;
-
           header("Location: Dashboard.php");
           exit();
         } else {
@@ -230,12 +208,11 @@ $slides = [
 <body class="auth-split-body">
   <div class="auth-split-card">
 
-    <!-- Left Visual Showcase Panel -->
     <div class="auth-visual-panel">
       <?php foreach ($slides as $idx => $s): ?>
-      <img src="<?php echo htmlspecialchars($s['img'], ENT_QUOTES, 'UTF-8'); ?>"
-        alt="<?php echo htmlspecialchars($s['title'], ENT_QUOTES, 'UTF-8'); ?>"
-        class="auth-slide-bg <?php echo $idx === 0 ? 'active' : ''; ?>">
+        <img src="<?php echo htmlspecialchars($s['img'], ENT_QUOTES, 'UTF-8'); ?>"
+          alt="<?php echo htmlspecialchars($s['title'], ENT_QUOTES, 'UTF-8'); ?>"
+          class="auth-slide-bg <?php echo $idx === 0 ? 'active' : ''; ?>">
       <?php endforeach; ?>
       <div class="auth-visual-scrim"></div>
 
@@ -251,24 +228,26 @@ $slides = [
         <div class="auth-credit-badge">
           <div class="auth-credit-avatar" id="slideAvatar">N</div>
           <div class="auth-credit-text">
-            <strong id="slideTitle"><?php echo htmlspecialchars($slides[0]['title'], ENT_QUOTES, 'UTF-8'); ?></strong>
-            <span
-              id="slideSub"><?php echo htmlspecialchars($slides[0]['badge'] . ' • ' . $slides[0]['sub'], ENT_QUOTES, 'UTF-8'); ?></span>
+            <strong id="slideTitle">
+              <?php echo htmlspecialchars($slides[0]['title'], ENT_QUOTES, 'UTF-8'); ?>
+            </strong>
+            <span id="slideSub">
+              <?php echo htmlspecialchars($slides[0]['badge'] . ' • ' . $slides[0]['sub'], ENT_QUOTES, 'UTF-8'); ?>
+            </span>
           </div>
         </div>
 
         <div class="auth-carousel-arrows">
           <button type="button" class="carousel-circle-btn" id="prevSlide" aria-label="Previous cover">
-            <i class="fa-solid fa-arrow-left"></i>
+            <i class="fa-solid fa-caret-left"></i>
           </button>
           <button type="button" class="carousel-circle-btn" id="nextSlide" aria-label="Next cover">
-            <i class="fa-solid fa-arrow-right"></i>
+            <i class="fa-solid fa-caret-right"></i>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Right Form Panel -->
     <div class="auth-form-panel">
       <div class="auth-top-bar">
         <a href="index.php" class="auth-brand-mark">NOVELSTORE</a>
@@ -287,14 +266,14 @@ $slides = [
         </div>
 
         <?php if (!empty($errors)): ?>
-        <div class="auth-error-alert">
-          <?php foreach ($errors as $error): ?>
-          <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
-          <?php endforeach; ?>
-        </div>
+          <div class="auth-error-alert">
+            <?php foreach ($errors as $error): ?>
+              <p><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+            <?php endforeach; ?>
+          </div>
         <?php endif; ?>
 
-        <!-- LOGIN FORM -->
+        <!-- login -->
         <form method="POST" action="" id="loginFormView"
           class="auth-form-view <?php echo $active_form === 'login' ? 'is-active' : ''; ?>">
           <div class="clean-field">
@@ -369,70 +348,70 @@ $slides = [
   </div>
 
   <script>
-  function switchAuthTab(mode) {
-    const loginView = document.getElementById('loginFormView');
-    const registerView = document.getElementById('registerFormView');
-    const headingTitle = document.getElementById('authHeadingTitle');
-    const headingSub = document.getElementById('authHeadingSub');
-    const modeChip = document.getElementById('modeChip');
+    function switchAuthTab(mode) {
+      const loginView = document.getElementById('loginFormView');
+      const registerView = document.getElementById('registerFormView');
+      const headingTitle = document.getElementById('authHeadingTitle');
+      const headingSub = document.getElementById('authHeadingSub');
+      const modeChip = document.getElementById('modeChip');
 
-    if (mode === 'register') {
-      loginView.classList.remove('is-active');
-      registerView.classList.add('is-active');
+      if (mode === 'register') {
+        loginView.classList.remove('is-active');
+        registerView.classList.add('is-active');
 
-      headingTitle.textContent = 'Create Account';
-      headingSub.textContent = 'Join NOVELSTORE and start reading';
+        headingTitle.textContent = 'Create Account';
+        headingSub.textContent = 'Join NOVELSTORE and start reading';
 
-      modeChip.innerHTML =
-        '<i class="fa-solid fa-user-plus"></i> New Reader';
+        modeChip.innerHTML =
+          '<i class="fa-solid fa-user-plus"></i> New Reader';
 
-      history.replaceState(
-        null,
-        '',
-        window.location.pathname + window.location.search + '#register'
-      );
-    } else {
-      registerView.classList.remove('is-active');
-      loginView.classList.add('is-active');
+        history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search + '#register'
+        );
+      } else {
+        registerView.classList.remove('is-active');
+        loginView.classList.add('is-active');
 
-      headingTitle.textContent = 'Hello Reader';
-      headingSub.textContent = 'Welcome to NOVELSTORE';
+        headingTitle.textContent = 'Hello Reader';
+        headingSub.textContent = 'Welcome to NOVELSTORE';
 
-      modeChip.innerHTML =
-        '<i class="fa-solid fa-book-open"></i> Reader Portal';
+        modeChip.innerHTML =
+          '<i class="fa-solid fa-book-open"></i> Reader Portal';
 
-      history.replaceState(
-        null,
-        '',
-        window.location.pathname + window.location.search
-      );
+        history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search
+        );
+      }
     }
-  }
 
-  if (window.location.hash === '#register') {
-    switchAuthTab('register');
-  }
+    if (window.location.hash === '#register') {
+      switchAuthTab('register');
+    }
 
-  const slidesData = <?php echo json_encode($slides, JSON_UNESCAPED_SLASHES); ?>;
-  const slideImgs = document.querySelectorAll('.auth-slide-bg');
-  const slideTitleEl = document.getElementById('slideTitle');
-  const slideSubEl = document.getElementById('slideSub');
-  const slideAvatarEl = document.getElementById('slideAvatar');
-  let currentSlide = 0;
+    const slidesData = <?php echo json_encode($slides, JSON_UNESCAPED_SLASHES); ?>;
+    const slideImgs = document.querySelectorAll('.auth-slide-bg');
+    const slideTitleEl = document.getElementById('slideTitle');
+    const slideSubEl = document.getElementById('slideSub');
+    const slideAvatarEl = document.getElementById('slideAvatar');
+    let currentSlide = 0;
 
-  function showSlide(index) {
-    currentSlide = (index + slidesData.length) % slidesData.length;
-    slideImgs.forEach((img, i) => {
-      img.classList.toggle('active', i === currentSlide);
-    });
-    const item = slidesData[currentSlide];
-    slideTitleEl.textContent = item.title;
-    slideSubEl.textContent = item.badge + ' • ' + item.sub;
-    slideAvatarEl.textContent = item.title.charAt(0).toUpperCase();
-  }
+    function showSlide(index) {
+      currentSlide = (index + slidesData.length) % slidesData.length;
+      slideImgs.forEach((img, i) => {
+        img.classList.toggle('active', i === currentSlide);
+      });
+      const item = slidesData[currentSlide];
+      slideTitleEl.textContent = item.title;
+      slideSubEl.textContent = item.badge + ' • ' + item.sub;
+      slideAvatarEl.textContent = item.title.charAt(0).toUpperCase();
+    }
 
-  document.getElementById('prevSlide').addEventListener('click', () => showSlide(currentSlide - 1));
-  document.getElementById('nextSlide').addEventListener('click', () => showSlide(currentSlide + 1));
+    document.getElementById('prevSlide').addEventListener('click', () => showSlide(currentSlide - 1));
+    document.getElementById('nextSlide').addEventListener('click', () => showSlide(currentSlide + 1));
   </script>
 </body>
 

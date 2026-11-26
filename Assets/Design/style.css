@@ -4621,56 +4621,21 @@ body.novel-showcase-body {
     #080707 80%
   );
   color: var(--cream);
+  /* need changes on font style */
   font-family: "DM Sans", sans-serif;
-}
-
-.top-ticker {
-  overflow: hidden;
-  border-bottom: 1px solid #ffffff17;
-  background: #090707a8;
-  padding: 10px 0;
-  white-space: nowrap;
-}
-
-.ticker-track {
-  display: flex;
-  width: max-content;
-  gap: 70px;
-  animation: tickerScroll 36s linear infinite;
-  font-size: 9px;
-  letter-spacing: 2.8px;
-  font-weight: 600;
-  color: #b8a9a1;
-  text-transform: uppercase;
-}
-
-.ticker-track b {
-  color: #bd8d72;
-  font-weight: 400;
-  padding: 0 10px;
-}
-
-.top-ticker:hover .ticker-track {
-  animation-play-state: paused;
-}
-
-@keyframes tickerScroll {
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 .grid-navbar {
   position: relative;
   z-index: 5;
-  min-height: 72px;
+  min-height: 65px;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 0 clamp(20px, 5vw, 72px);
+  padding: 0 clamp(20px, 5vw, 65px);
   border-bottom: 1px solid #ffffff14;
   background: #0b0809a6;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(15px);
 }
 
 .nav-brand {
@@ -4691,10 +4656,9 @@ body.novel-showcase-body {
   height: 31px;
   border: 1px solid #bd8d72;
   border-radius: 50%;
-  font:
-    italic 19px "Playfair Display",
-    serif;
+  font: italic 17px "Playfair Display", serif;
   color: #d7b39a;
+  box-shadow: 0 0 5px #bd8d72;
 }
 
 .nav-links {
@@ -4768,13 +4732,13 @@ body.novel-showcase-body {
   position: absolute;
   border-radius: 50%;
   filter: blur(85px);
-  opacity: 0.13;
+  opacity: 0.30;
   pointer-events: none;
 }
 
 .orb-one {
-  width: 350px;
-  height: 350px;
+  width: 450px;
+    height: 450px;
   background: #b26e4b;
   left: -150px;
   top: 30%;
@@ -4797,28 +4761,6 @@ body.novel-showcase-body {
   margin-bottom: 16px;
 }
 
-.brand-emblem {
-  width: 27px;
-  height: 24px;
-  display: grid;
-  grid-template-columns: repeat(2, 8px);
-  gap: 3px;
-  justify-content: center;
-  align-content: center;
-}
-
-.brand-emblem span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #e9dcd3;
-}
-
-.brand-emblem span:first-child {
-  grid-column: 1/-1;
-  justify-self: center;
-}
-
 .brand-title-row {
   display: flex;
   align-items: center;
@@ -4829,12 +4771,25 @@ body.novel-showcase-body {
 }
 
 .brand-ring {
-  width: 19px;
-  height: 19px;
-  border: 2px solid #d0a68b;
-  border-right-color: transparent;
+  width: 20px;
+    height: 20px;
+    display: inline-block;
+    position: relative;
   border-radius: 50%;
-  transform: rotate(-30deg);
+  background: #d0a68b;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  .brand-ring::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #241617;
+    top: -5px;
+    left: 7px;
 }
 
 .brand-kicker {
@@ -4884,6 +4839,7 @@ body.novel-showcase-body {
   transform-style: preserve-3d;
   filter: brightness(calc(1 - var(--abs) * 0.19));
   z-index: calc(10 - var(--abs));
+  will-change: transform, opacity;
 }
 
 .slider-card.is-active {
@@ -7109,7 +7065,8 @@ body.ns-dash-body {
 }
 
 .ns-topbar-title strong {
-  font-family: var(--font-heading, "Playfair Display", serif);
+  /* font-family: var(--font-heading, "Playfair Display", serif); */
+  font-family: "Arial Black", serif;
   font-size: 20px;
   letter-spacing: 0.8px;
   color: var(--primary-dark, #3e2723);
@@ -8823,4 +8780,30 @@ body.auth-split-body::after {
 
 .ns-wish-remove:hover {
   background: #fdf0ee;
+}
+
+/* ===== Readability & typography refresh ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Lora:wght@400;500;600&display=swap');
+:root {
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-heading: 'Manrope', 'Segoe UI', sans-serif;
+  --font-header: 'Manrope', 'Segoe UI', sans-serif;
+  --font-reading: 'Lora', Georgia, serif;
+}
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body, button, input, select, textarea, table, nav, label, small, p, li {
+  font-family: var(--font-body) !important;
+  letter-spacing: 0.005em;
+}
+h1, h2, h3, h4, h5, h6, .section-title, .page-title {
+  font-family: var(--font-heading) !important;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+button, input, select, textarea { font-size: 0.95rem; }
+body { line-height: 1.65; }
+.reader-content, .chapter-content, .novel-text, .reading-area {
+  font-family: var(--font-reading) !important;
+  line-height: 1.9;
+  letter-spacing: 0.015em;
 }
